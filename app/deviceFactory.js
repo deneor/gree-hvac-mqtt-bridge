@@ -186,6 +186,7 @@ class Controller {
      */
   _handleResponse (msg, rinfo) {
     const message = JSON.parse(msg + '')
+    console.log('[UDP] _handleResponse %s', message)
 
     // Extract encrypted package from message using device key (if available)
     const pack = encryptionService.decrypt(message, (this.controller || {}).key)
