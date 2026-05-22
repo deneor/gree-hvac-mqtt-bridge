@@ -15,7 +15,8 @@
             "broker_url": "mqtt://localhost",
             "username": "",
             "password": "",
-            "retain": ""
+            "retain": "",
+            "controller_only": ""
         },
         "devices": [
             {
@@ -31,7 +32,8 @@
             "topic_prefix": "str?",
             "username": "str?",
             "password": "str?",
-            "retain": "str?"
+            "retain": "str?",
+            "controller_only": "str?"
         },
         "devices": [
             {
