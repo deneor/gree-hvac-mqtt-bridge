@@ -9,11 +9,16 @@ MQTT_TOPIC_PREFIX=$(jq -r ".mqtt.topic_prefix" $CONFIG_PATH)
 MQTT_USERNAME=$(jq -r ".mqtt.username" $CONFIG_PATH)
 MQTT_PASSWORD=$(jq -r ".mqtt.password" $CONFIG_PATH)
 MQTT_RETAIN=$(jq -r ".mqtt.retain" $CONFIG_PATH)
+CONTROLLER_ONLY=$(jq -r ".mqtt.controller_only" $CONFIG_PATH)
 if [ "$MQTT_RETAIN" = null ]; then
   MQTT_RETAIN=false
 fi
+if [ "$CONTROLLER_ONLY" = null ]; then
+  CONTROLLER_ONLY=false
+fi
 
 echo "MQTT_RETAIN: ${MQTT_RETAIN}"
+echo "CONTROLLER_ONLY: ${CONTROLLER_ONLY}"
 npm install
 
 INSTANCES=$(jq '.devices | length' $CONFIG_PATH)
@@ -31,7 +36,8 @@ if [ "$INSTANCES" -gt 1 ]; then
 			--mqtt-topic-prefix="${MQTT_TOPIC_PREFIX}" \
 			--mqtt-username="${MQTT_USERNAME}" \
 			--mqtt-password="${MQTT_PASSWORD}" \
-			--mqtt-retain="${MQTT_RETAIN}"
+			--mqtt-retain="${MQTT_RETAIN}" \
+			--controllerOnly="${CONTROLLER_ONLY}"
 	done
 	npx pm2 logs /HVAC_/
 else
@@ -45,5 +51,6 @@ else
 		--mqtt-topic-prefix="${MQTT_TOPIC_PREFIX}" \
 		--mqtt-username="${MQTT_USERNAME}" \
 		--mqtt-password="${MQTT_PASSWORD}" \
-		--mqtt-retain="${MQTT_RETAIN}"
+		--mqtt-retain="${MQTT_RETAIN}" \
+		--controllerOnly="${CONTROLLER_ONLY}"
 fi
