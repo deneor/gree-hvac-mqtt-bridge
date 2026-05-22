@@ -2,6 +2,7 @@
 'use strict'
 
 const mqtt = require('mqtt')
+const util = require('util');
 const commands = require('./app/commandEnums')
 const argv = require('minimist')(process.argv.slice(2), {
   string: ['hvac-host', 'mqtt-broker-url', 'mqtt-topic-prefix', 'mqtt-username', 'mqtt-password'],
@@ -92,7 +93,7 @@ const deviceOptions = {
   debug: debug,
   onStatus: (deviceModel, changed) => {
     onStatus(deviceModel, changed)
-    console.log('[UDP] Status changed on %s: %s', deviceModel.name, changed)
+    console.log('[UDP] Status changed on %s: %s', deviceModel.name, util.inspect(changed, { showHidden: false, depth: null, colors: true }))
   },
   onUpdate: (deviceModel, changed) => {
     onStatus(deviceModel, changed)

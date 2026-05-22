@@ -186,7 +186,6 @@ class Controller {
      */
   _handleResponse (msg, rinfo) {
     const message = JSON.parse(msg + '')
-    console.log('[UDP] _handleResponse %s', message)
 
     // Extract encrypted package from message using device key (if available)
     const pack = encryptionService.decrypt(message, (this.controller || {}).key)
@@ -213,7 +212,7 @@ class Controller {
     // If package type is subDev list
     if (type === 'subList'){
       for(let device of pack.list)
-        this._setDevice(device.mac, device.name, true)
+        this._setDevice(device.mac, device.mac, true)
       let count = 0
       for(let device of Object.values(this.controller.devices))
         if(device.isSubDev)
@@ -289,7 +288,7 @@ class Device {
     this.pollingInterval = this.controller.options.pollingInterval
 
     this.mac = options.mac
-    this.name = options.name
+    this.name = options.mac
     this.callbacks = options.callbacks
 
     this.debug = this.controller.debug
@@ -343,6 +342,7 @@ class Device {
         changed[col] = pack.dat[i]
       this.props[col] = pack.dat[i]
     })
+
     if(Object.keys(changed).length > 0)
       this.callbacks.onStatus(this, this._prepareCallback(changed))
     return
